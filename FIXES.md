@@ -2,7 +2,35 @@
 
 ## Datum: 2025-12-02
 
-## 🔄 Update: Weitere Fehler behoben (nach initialen Fixes)
+## 🔄 Update 3: SQL-Syntax-Fehler behoben
+
+### ✅ GUID-Spalten korrigiert
+**Fehlermeldung:**
+```
+Syntax-Fehler in SQL-Statement
+C_ERRORINSQL
+```
+
+**Ursache:** GUID-bezogene Spalten müssen **kleingeschrieben** bleiben, während andere Spalten Großbuchstaben verwenden.
+
+**Gelöst:** Alle GUID-Spalten zurück auf Kleinbuchstaben:
+```sql
+-- VORHER (FEHLER):
+t.GUID, r.GUID, rz.GUID
+vz1.REFGUID, vz1.VORAUSSETZUNGGUID
+
+-- NACHHER (KORREKT):
+t.guid, r.guid, rz.guid
+vz1.refguid, vz1.voraussetzungguid
+```
+
+**Wichtige Erkenntnis:**
+- **GUID-Spalten**: Kleinbuchstaben (guid, refguid, voraussetzungguid)
+- **Andere Spalten**: Großbuchstaben (RESSOURCE, NAME, STATUS, PLANEN, etc.)
+
+---
+
+## 🔄 Update 2: Weitere Fehler behoben (nach initialen Fixes)
 
 ### ✅ STRING_AGG Datentyp-Fehler behoben
 **Fehlermeldung:**
