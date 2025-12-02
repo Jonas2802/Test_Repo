@@ -2,7 +2,6 @@ var FlexiDialog={scriptsLoaded:!1,escDisabled:!1,currentLocation:null,htmlEditor
 
 async function dropToMonteur(fromRessource, rezuIds, toRessource) {
   let xmlData, rezuTs;
-  debugger;
   console.log("dropToMonteur");
   try {
     //4,18,21,23,24,68
@@ -138,7 +137,6 @@ function refreshBoard() {
 
 async function openNeuterminierungFlexiDialog(rezu) {
   let fields, config, data;
-  debugger;
   try {
 
     let ressource = app.soap.call("webobjects/webparts").getDBValue("RESSOURCE", "REZU", "REZU = '" + rezu + "'");
@@ -196,7 +194,6 @@ async function processNeuterminierungData(rezu, data) {
 
 async function openRessourcenwechselFlexiDialog(rezuId, defaultRessource) {
   let fields, config, data;
-  debugger;
   try {
     fields = [
       { tag: "RESSOURCE", name: "Ressource", type: "I", required: true, value: defaultRessource || "", picklist: "~/Resource/RessourceTab.aspx?view=pickressgruppe&aktiv=1&ANP_POOL=1" },
@@ -277,7 +274,6 @@ async function processRessourcenwechselData(rezuId, data) {
 }
 
 async function processFertigstellungData(rezuId) {
-  debugger;
   let newAuftragPosId, fertigstellungArtikel;
 
   try {
@@ -375,7 +371,6 @@ async function closeReZu(rezuId) {
 }
 
 async function processWeitererEinsatzData(rezuId) {
-  debugger;
   let newAuftragPosId;
 
   try {
@@ -439,7 +434,6 @@ async function processWeitererEinsatzData(rezuId) {
 }
 
 async function processGrobplanungData(rezuId, data) {
-  debugger;
   let ressource;
 
   try {

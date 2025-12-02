@@ -1,60 +1,59 @@
 /*+ SQLPARSERNEW */
 SELECT
-  cardKey = CONCAT(r.guid, '-', rg.ressource),
-  r.ressource,
+  cardKey = CONCAT(r.GUID, '-', rg.RESSOURCE),
+  r.RESSOURCE AS ressource,
   rezu = NULL,
-  ressourceName = r.name,
+  ressourceName = r.NAME,
   rg.rezus,
   stage = CASE WHEN vz2.VORAUSSETZUNG != 'Service' THEN 'touren' END,
-  vz2.voraussetzung,
+  vz2.VORAUSSETZUNG AS voraussetzung,
   rg.rezuIds,
   start = NULL,
   ende = NULL,
-  orderBy = rg.ressource
+  orderBy = rg.RESSOURCE
 FROM (
   SELECT
-    t.ressource,
+    t.RESSOURCE,
     rezus = COUNT(*),
-    rezuIds = STRING_AGG(t.id, ';')
+    rezuIds = STRING_AGG(CAST(t.ID AS VARCHAR), ';')
   FROM REZU t
   JOIN REZU_REF t2 on t.GUID = t2.GUID
-  WHERE t.status < 50
-  AND (DATEPART(WEEK, t2.posplanstart) - DATEPART(WEEK, GETDATE())) IN ($P{WW})
-  GROUP BY t.ressource
+  WHERE t.STATUS < 50
+  AND (DATEPART(WEEK, t2.POSPLANSTART) - DATEPART(WEEK, GETDATE())) IN ($P{WW})
+  GROUP BY t.RESSOURCE
 ) rg
-JOIN RESSOURCE r ON rg.ressource = r.ressource
-LEFT JOIN VORAUSSETZUNGREF vz1 ON vz1.REFGUID = r.guid
+JOIN RESSOURCE r ON rg.RESSOURCE = r.RESSOURCE
+LEFT JOIN VORAUSSETZUNGREF vz1 ON vz1.REFGUID = r.GUID
 LEFT JOIN VORAUSSETZUNG vz2 ON vz2.GUID = vz1.VORAUSSETZUNGGUID
 WHERE 1 = 1
-AND r.anp_pool = 1
-AND r.planen = 1
-AND r.name like '%tour%'
-AND r.planen = 1
+AND r.ANP_POOL = 1
+AND r.PLANEN = 1
+AND r.NAME like '%tour%'
 
 UNION ALL
 
 SELECT
-  cardKey = rz.guid,
-  rz.ressource,
-  rezu = rz.rezu,
-  ressourceName = rz.rezu,
+  cardKey = rz.GUID,
+  rz.RESSOURCE AS ressource,
+  rezu = rz.REZU,
+  ressourceName = rz.REZU,
   rezus = 1,
-  stage = rz.ressource,
-  vz2.voraussetzung,
+  stage = rz.RESSOURCE,
+  vz2.VORAUSSETZUNG AS voraussetzung,
   rezuIds = NULL,
-  start = FORMAT(rz.sollstart, 'd', culture.code),
-  ende = FORMAT(rz.sollende, 'd', culture.code),
-  orderBy = rz.rezu
-FROM rezu rz
-JOIN REZU_REF rref on rz.guid = rref.guid
-JOIN RESSOURCE r ON rz.ressource = r.ressource
-JOIN VORAUSSETZUNGREF vz1 ON vz1.REFGUID = r.guid
+  start = FORMAT(rz.SOLLSTART, 'd', culture.code),
+  ende = FORMAT(rz.SOLLENDE, 'd', culture.code),
+  orderBy = rz.REZU
+FROM REZU rz
+JOIN REZU_REF rref on rz.GUID = rref.GUID
+JOIN RESSOURCE r ON rz.RESSOURCE = r.RESSOURCE
+JOIN VORAUSSETZUNGREF vz1 ON vz1.REFGUID = r.GUID
 JOIN VORAUSSETZUNG vz2 ON vz2.GUID = vz1.VORAUSSETZUNGGUID
 CROSS APPLY (SELECT code = CASE '$S{LNG}' WHEN 'DE' THEN 'de-DE' WHEN 'ES' THEN 'es-MX' WHEN 'IT' THEN 'it-IT' ELSE 'en-US' END) culture
 WHERE 1 = 1
-AND (DATEPART(WEEK, ISNULL(rref.posplanstart, rz.sollstart)) - DATEPART(WEEK, GETDATE())) IN ($P{WW})
-AND vz2.voraussetzung = 'Service'
-AND rz.status < 50
-AND r.planen = 1
-AND r.aktiv = 1
-AND ISNULL(r.ressourcegruppe, '') = ''
+AND (DATEPART(WEEK, ISNULL(rref.POSPLANSTART, rz.SOLLSTART)) - DATEPART(WEEK, GETDATE())) IN ($P{WW})
+AND vz2.VORAUSSETZUNG = 'Service'
+AND rz.STATUS < 50
+AND r.PLANEN = 1
+AND r.AKTIV = 1
+AND ISNULL(r.RESSOURCEGRUPPE, '') = ''
