@@ -43,7 +43,7 @@ SELECT
   start = FORMAT(rz.sollstart, 'd', culture.code),
   ende = FORMAT(rz.sollende, 'd', culture.code),
   orderBy = rz.rezu
-FROM REZU rz
+FROM rezu rz
 JOIN REZU_REF rref on rz.guid = rref.guid
 JOIN RESSOURCE r ON rz.ressource = r.ressource
 JOIN VORAUSSETZUNGREF vz1 ON vz1.REFGUID = r.guid
