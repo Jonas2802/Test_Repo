@@ -1,13 +1,13 @@
 /*+ SQLPARSERNEW */
 SELECT
   cardKey = CONCAT(r.guid, '-', rg.ressource),
-  ressource = r.ressource,
+  r.ressource,
   rezu = NULL,
   ressourceName = r.name,
-  rezus = rg.rezus,
-  stage = CASE WHEN vz2.voraussetzung != 'Service' THEN 'touren' END,
-  voraussetzung = vz2.voraussetzung,
-  rezuIds = rg.rezuIds,
+  rg.rezus,
+  stage = CASE WHEN vz2.VORAUSSETZUNG != 'Service' THEN 'touren' END,
+  vz2.voraussetzung,
+  rg.rezuIds,
   start = NULL,
   ende = NULL,
   orderBy = rg.ressource
@@ -33,12 +33,12 @@ UNION ALL
 
 SELECT
   cardKey = rz.guid,
-  ressource = rz.ressource,
+  rz.ressource,
   rezu = rz.rezu,
   ressourceName = rz.rezu,
   rezus = 1,
   stage = rz.ressource,
-  voraussetzung = vz2.voraussetzung,
+  vz2.voraussetzung,
   rezuIds = NULL,
   start = FORMAT(rz.sollstart, 'd', culture.code),
   ende = FORMAT(rz.sollende, 'd', culture.code),
