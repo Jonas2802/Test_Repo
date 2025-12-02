@@ -13,11 +13,11 @@ SELECT
   orderBy = rg.ressource
 FROM (
   SELECT
-    ressource = t.ressource,
+    t.ressource,
     rezus = COUNT(*),
     rezuIds = STRING_AGG(t.id, ';')
   FROM REZU t
-  JOIN REZU_REF t2 on t.guid = t2.guid
+  JOIN REZU_REF t2 on t.GUID = t2.GUID
   WHERE t.status < 50
   AND (DATEPART(WEEK, t2.posplanstart) - DATEPART(WEEK, GETDATE())) IN ($P{WW})
   GROUP BY t.ressource
