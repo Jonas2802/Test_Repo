@@ -40,15 +40,14 @@ SELECT
   stage = rz.ressource,
   vz2.voraussetzung,
   rezuIds = NULL,
-  start = FORMAT(rz.sollstart, 'd', culture.code),
-  ende = FORMAT(rz.sollende, 'd', culture.code),
+  start = CONVERT(nvarchar(10), rz.sollstart, 104),
+  ende = CONVERT(nvarchar(10), rz.sollende, 104),
   orderBy = rz.rezu
 FROM REZU rz
 JOIN REZU_REF rref on rz.guid = rref.guid
 JOIN RESSOURCE r ON rz.ressource = r.ressource
 JOIN VORAUSSETZUNGREF vz1 ON vz1.REFGUID = r.guid
 JOIN VORAUSSETZUNG vz2 ON vz2.GUID = vz1.VORAUSSETZUNGGUID
-CROSS APPLY (SELECT code = CASE '$S{LNG}' WHEN 'DE' THEN 'de-DE' WHEN 'ES' THEN 'es-MX' WHEN 'IT' THEN 'it-IT' ELSE 'en-US' END) culture
 WHERE 1 = 1
 AND (DATEPART(WEEK, ISNULL(rref.posplanstart, rz.sollstart)) - DATEPART(WEEK, GETDATE())) IN ($P{WW})
 AND vz2.voraussetzung = 'Service'
