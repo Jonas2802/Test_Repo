@@ -2,9 +2,50 @@
 
 ## Datum: 2025-12-02
 
+## 🔄 Update: Weitere Fehler behoben (nach initialen Fixes)
+
+### ✅ STRING_AGG Datentyp-Fehler behoben
+**Fehlermeldung:**
+```
+Der Argumentdatentyp nvarchar ist für das 2.Argument der string_agg-Funktion ungültig
+```
+
+**Ursache:** `VARCHAR` ohne Längenangabe ist in STRING_AGG nicht erlaubt.
+
+**Gelöst:**
+```sql
+-- VORHER (FEHLER):
+rezuIds = STRING_AGG(CAST(t.ID AS VARCHAR), ';')
+
+-- NACHHER (KORREKT):
+rezuIds = STRING_AGG(CAST(t.ID AS NVARCHAR(MAX)), ';')
+```
+
+### ✅ ANP_POOL Spalte entfernt
+**Fehlermeldung:**
+```
+Ungültiger Spaltenname 'ANP_POOL'
+```
+
+**Ursache:** Die Spalte `ANP_POOL` existiert nicht in der RESSOURCE-Tabelle Ihrer Datenbank.
+
+**Gelöst:** Bedingung komplett entfernt:
+```sql
+-- VORHER (FEHLER):
+WHERE 1 = 1
+AND r.ANP_POOL = 1
+AND r.PLANEN = 1
+
+-- NACHHER (KORREKT):
+WHERE 1 = 1
+AND r.PLANEN = 1
+```
+
+**Hinweis:** Falls Sie einen Pool-Filter benötigen, können Sie stattdessen `r.RESSOURCEGRUPPE` oder ein anderes Feld verwenden.
+
 ---
 
-## 🔴 Behobene kritische Fehler
+## 🔴 Ursprünglich behobene kritische Fehler
 
 ### 1. ✅ SQL-Spaltennamen korrigiert
 
