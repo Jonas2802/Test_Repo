@@ -2,7 +2,29 @@
 
 ## Datum: 2025-12-02
 
-## 🔄 Update 3: SQL-Syntax-Fehler behoben
+## 🔄 Update 4: SQL komplett auf Original-Schreibweise zurückgesetzt
+
+### ✅ FINALE LÖSUNG: Alle Spaltennamen kleingeschrieben
+**Problem:** Inkonsistente Groß-/Kleinschreibung führte zu wiederkehrenden SQL-Fehlern.
+
+**Lösung:** Zurück zur **Original-Schreibweise** (komplett kleingeschrieben):
+```sql
+-- FINALE KORREKTE VERSION:
+- Alle Spaltennamen: Kleinbuchstaben (ressource, name, status, planen, aktiv)
+- GUID-Spalten: Kleinbuchstaben (guid, refguid, voraussetzungguid)
+- SQL-Funktionen: Großbuchstaben (SELECT, FROM, JOIN, COUNT, STRING_AGG)
+- Tabellennamen: Großbuchstaben (REZU, RESSOURCE, VORAUSSETZUNG)
+```
+
+**Wichtigste Änderungen:**
+1. ✅ STRING_AGG mit NVARCHAR(MAX) (statt VARCHAR)
+2. ✅ ANP_POOL entfernt (Spalte existiert nicht)
+3. ✅ Alle Spaltennamen kleingeschrieben
+4. ✅ GUID-bezogene Spalten kleingeschrieben
+
+---
+
+## 🔄 Update 3: SQL-Syntax-Fehler behoben (VERALTET)
 
 ### ✅ GUID-Spalten korrigiert
 **Fehlermeldung:**
