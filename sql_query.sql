@@ -1,19 +1,19 @@
 /*+ SQLPARSERNEW */
 SELECT
   cardKey = CONCAT(r.guid, '-', rg.ressource),
-  r.ressource,
+  ressource = r.ressource,
   rezu = NULL,
   ressourceName = r.name,
-  rg.rezus,
-  stage = CASE WHEN vz2.VORAUSSETZUNG != 'Service' THEN 'touren' END,
-  vz2.voraussetzung,
-  rg.rezuIds,
+  rezus = rg.rezus,
+  stage = CASE WHEN vz2.voraussetzung != 'Service' THEN 'touren' END,
+  voraussetzung = vz2.voraussetzung,
+  rezuIds = rg.rezuIds,
   start = NULL,
   ende = NULL,
   orderBy = rg.ressource
 FROM (
   SELECT
-    t.ressource,
+    ressource = t.ressource,
     rezus = COUNT(*),
     rezuIds = STRING_AGG(CAST(t.id AS NVARCHAR), ';')
   FROM REZU t
@@ -33,18 +33,18 @@ UNION ALL
 
 SELECT
   cardKey = rz.guid,
-  rz.ressource,
+  ressource = rz.ressource,
   rezu = rz.rezu,
   ressourceName = rz.rezu,
   rezus = 1,
   stage = rz.ressource,
-  vz2.voraussetzung,
+  voraussetzung = vz2.voraussetzung,
   rezuIds = NULL,
   start = FORMAT(rz.sollstart, 'd', culture.code),
   ende = FORMAT(rz.sollende, 'd', culture.code),
   orderBy = rz.rezu
-FROM rezu rz
-JOIN REZU_REF rref on rz.guid = rref.guid
+FROM REZU rz
+JOIN REZU_REF rref on rz.GUID = rref.GUID
 JOIN RESSOURCE r ON rz.ressource = r.ressource
 JOIN VORAUSSETZUNGREF vz1 ON vz1.REFGUID = r.guid
 JOIN VORAUSSETZUNG vz2 ON vz2.GUID = vz1.VORAUSSETZUNGGUID
