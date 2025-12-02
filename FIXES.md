@@ -2,7 +2,37 @@
 
 ## Datum: 2025-12-02
 
-## 🔄 Update 4: SQL komplett auf Original-Schreibweise zurückgesetzt
+## 🔄 Update 5: SQL-Syntax angepasst an verifizierte Arbeitsbeispiele
+
+### ✅ WICHTIGSTE ÄNDERUNG: STRING_AGG Datentyp korrigiert
+**Problem:** Trotz aller Korrekturen weiterhin C_ERRORINSQL.
+
+**Lösung:** Nach Analyse von 2 funktionierenden Flowboard-Queries wurde der exakte Syntax-Pattern identifiziert:
+
+**Kritische Änderungen:**
+1. ✅ `STRING_AGG(CAST(t.id AS NVARCHAR), ';')` - **OHNE (MAX)**
+2. ✅ JOIN-Bedingungen: GUID, REFGUID, VORAUSSETZUNGGUID in **GROSSBUCHSTABEN**
+3. ✅ Daten-Spalten: ressource, name, status, planen in **Kleinbuchstaben**
+4. ✅ Vereinfachte Alias-Syntax wo möglich
+
+**Beispiel der Änderungen:**
+```sql
+-- VORHER (FEHLER):
+rezuIds = STRING_AGG(CAST(t.id AS NVARCHAR(MAX)), ';')
+JOIN REZU_REF t2 on t.guid = t2.guid
+LEFT JOIN VORAUSSETZUNGREF vz1 ON vz1.refguid = r.guid
+
+-- NACHHER (KORREKT):
+rezuIds = STRING_AGG(CAST(t.id AS NVARCHAR), ';')
+JOIN REZU_REF t2 on t.GUID = t2.GUID
+LEFT JOIN VORAUSSETZUNGREF vz1 ON vz1.REFGUID = r.guid
+```
+
+**Quelle:** Pattern verifiziert anhand von 2 funktionierenden Flowboard-Queries aus dem gleichen AP+-System.
+
+---
+
+## 🔄 Update 4: SQL komplett auf Original-Schreibweise zurückgesetzt (VERALTET)
 
 ### ✅ FINALE LÖSUNG: Alle Spaltennamen kleingeschrieben
 **Problem:** Inkonsistente Groß-/Kleinschreibung führte zu wiederkehrenden SQL-Fehlern.
