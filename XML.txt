@@ -1,0 +1,102 @@
+<Board>
+  <Filters></Filters>
+  <Parameters>
+    <Parameter>
+      <Name>WW</Name>
+      <DefaultValue>0</DefaultValue>
+    </Parameter>
+  </Parameters>
+  <Lanes>
+    <Lane>
+      <GUID>40a6d335-402a-4f48-89fc-8da28b7446e8</GUID>
+      <Title link="">Touren</Title>
+      <Where>STAGE = 'touren'</Where>
+      <CardTemplate>
+        <Title>ressourceName</Title>
+        <MenuItems>
+          <MenuItem Refresh="true">
+            <GUID>55e56b42-b201-445a-ba83-19746b223165</GUID>
+            <Title>Tourenplanung</Title>
+            <JavaScript>
+              <Call>menuItemTourenplanung('${sql.ressource}', '${sql.rezuIds}')</Call>
+            </JavaScript>
+          </MenuItem>
+        </MenuItems>
+        <Link>resource/RessourceRec.aspx?RESSOURCE=${sql.ressource}</Link>
+        <Rows>
+          <Row ShowInDetail="true">
+            <Label>ReZus</Label>
+            <Value>rezus</Value>
+            <Link>resource/RezuRec.aspx?ID=in[${sql.rezuIds}]</Link>
+          </Row>
+        </Rows>
+        <Indicator></Indicator>
+      </CardTemplate>
+      <Slices></Slices>
+    </Lane>
+    <DynamicLane>
+      <GUID>fb3c3c46-0523-44b1-a3df-e9ba177a128d</GUID>
+      <Title link="resource/RessourceRec.aspx?RESSOURCE={ressource}">{name}</Title>
+      <DynamicSQL>SELECT r.ressource, r.name FROM RESSOURCE r JOIN VORAUSSETZUNGREF t1 ON t1.REFGUID = r.guid JOIN VORAUSSETZUNG t2 ON t2.GUID = t1.VORAUSSETZUNGGUID WHERE r.AKTIV = 1 AND t2.VORAUSSETZUNG = 'Service' AND ISNULL(r.RESSOURCEGRUPPE, '') = ''</DynamicSQL>
+      <DynamicTable>RESSOURCE</DynamicTable>
+      <Where>stage = '${dynamic.ressource}'</Where>
+      <OnDrop Refresh="true">
+        <JavaScript>
+          <Call>dropToMonteur('${sql.ressource}', '${sql.rezuIds}', '${dynamic.ressource}')</Call>
+        </JavaScript>
+      </OnDrop>
+      <CardTemplate>
+        <Title>ressourceName</Title>
+        <MenuItems>
+          <MenuItem Refresh="true">
+            <GUID>1aed3e6e-600d-4f0f-8a2a-055bd60d5d9b</GUID>
+            <Title>Ressourcenwechsel</Title>
+            <JavaScript>
+              <Call>menuItemRessourcenwechsel('${sql.rezu}', '${sql.ressource}')</Call>
+            </JavaScript>
+          </MenuItem>
+          <MenuItem Refresh="true">
+            <GUID>0072d6ea-e8d9-4436-871b-0992bdca1d85</GUID>
+            <Title>Neuterminierung</Title>
+            <JavaScript>
+              <Call>menuItemNeuterminierung('${sql.rezu}')</Call>
+            </JavaScript>
+          </MenuItem>
+          <MenuItem Refresh="true">
+            <GUID>146a8180-c83c-4fda-ab00-d2675740a17c</GUID>
+            <Title>Fertigstellung</Title>
+            <JavaScript>
+              <Call>menuItemFertigstellung('${sql.rezu}', '${sql.ressource}')</Call>
+            </JavaScript>
+          </MenuItem>
+          <MenuItem Refresh="true">
+            <GUID>98eb99d1-9822-45d0-8487-597a5b0504fa</GUID>
+            <Title>Weiterer Einsatz</Title>
+            <JavaScript>
+              <Call>menuItemWeitererEinsatz('${sql.rezu}', '${sql.ressource}')</Call>
+            </JavaScript>
+          </MenuItem>
+          <MenuItem Refresh="true">
+            <GUID>b73ffa3d-253f-4d2f-b0e4-0b56a599753c</GUID>
+            <Title>Grobplanung</Title>
+            <JavaScript>
+              <Call>menuItemGrobplanung('${sql.rezu}', '${sql.ressource}')</Call>
+            </JavaScript>
+          </MenuItem>
+        </MenuItems>
+        <Link>resource/rezuRec.aspx?REZU=${sql.rezu}</Link>
+        <Rows>
+          <Row ShowInDetail="true">
+            <Label>Start</Label>
+            <Value>start</Value>
+          </Row>
+          <Row ShowInDetail="true">
+            <Label>Ende</Label>
+            <Value>ende</Value>
+          </Row>
+        </Rows>
+        <Indicator></Indicator>
+      </CardTemplate>
+    </DynamicLane>
+  </Lanes>
+</Board>
