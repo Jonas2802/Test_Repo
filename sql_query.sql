@@ -15,7 +15,7 @@ FROM (
   SELECT
     ressource = t.ressource,
     rezus = COUNT(*),
-    rezuIds = STRING_AGG(CAST(t.id AS NVARCHAR), ';')
+    rezuIds = STRING_AGG(t.id, ';')
   FROM REZU t
   JOIN REZU_REF t2 on t.guid = t2.guid
   WHERE t.status < 50
