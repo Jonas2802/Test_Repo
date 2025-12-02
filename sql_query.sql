@@ -50,7 +50,7 @@ JOIN VORAUSSETZUNGREF vz1 ON vz1.REFGUID = r.guid
 JOIN VORAUSSETZUNG vz2 ON vz2.GUID = vz1.VORAUSSETZUNGGUID
 WHERE 1 = 1
 AND (DATEPART(WEEK, ISNULL(rref.posplanstart, rz.sollstart)) - DATEPART(WEEK, GETDATE())) IN ($P{WW})
-AND vz2.voraussetzung = 'Service'
+AND vz2.VORAUSSETZUNG = 'Service'
 AND rz.status < 50
 AND r.planen = 1
 AND r.aktiv = 1
