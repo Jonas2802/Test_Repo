@@ -17,7 +17,7 @@ FROM (
     rezus = COUNT(*),
     rezuIds = STRING_AGG(CAST(t.id AS NVARCHAR), ';')
   FROM REZU t
-  JOIN REZU_REF t2 on t.GUID = t2.GUID
+  JOIN REZU_REF t2 on t.guid = t2.guid
   WHERE t.status < 50
   AND (DATEPART(WEEK, t2.posplanstart) - DATEPART(WEEK, GETDATE())) IN ($P{WW})
   GROUP BY t.ressource
@@ -44,7 +44,7 @@ SELECT
   ende = FORMAT(rz.sollende, 'd', culture.code),
   orderBy = rz.rezu
 FROM REZU rz
-JOIN REZU_REF rref on rz.GUID = rref.GUID
+JOIN REZU_REF rref on rz.guid = rref.guid
 JOIN RESSOURCE r ON rz.ressource = r.ressource
 JOIN VORAUSSETZUNGREF vz1 ON vz1.REFGUID = r.guid
 JOIN VORAUSSETZUNG vz2 ON vz2.GUID = vz1.VORAUSSETZUNGGUID
